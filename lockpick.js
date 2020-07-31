@@ -30,7 +30,7 @@ class Lockpick {
 		this.canvas = document.getElementById("canvas")
 		this.board = this.canvas.getContext('2d');
 		this.canvasXDiff = this.canvas.width / 2;
-		this.canvasYDiff = this.canvas.height;
+		this.canvasYDiff = this.canvas.height-50;
 		document.addEventListener("keydown", self.handleEvent.bind(self));
 		document.addEventListener("keyup", self.handleEventUp.bind(self));
 		this.downTimeout = "";
@@ -153,14 +153,11 @@ class Lockpick {
 		this.board.beginPath();
 		this.board.arc(this.canvasXDiff, this.canvasYDiff, this.radius, Math.PI+(this.currentUnlockStatus)*(Math.PI/180), (2*Math.PI)+(this.currentUnlockStatus)*(Math.PI/180));
 		this.board.stroke();
+		this.board.moveTo(this.convertAngleToX(this.currentUnlockStatus), this.convertAngleToY(this.currentUnlockStatus));
+		this.board.lineTo(this.convertAngleToX(this.currentUnlockStatus+180), this.convertAngleToY(this.currentUnlockStatus+180));
+		this.board.stroke();
 		this.board.moveTo(this.canvasXDiff, this.canvasYDiff)
 		this.board.lineTo(this.convertAngleToX(this.currentPos), this.convertAngleToY(this.currentPos));
-		this.board.stroke();
-		this.board.moveTo(this.canvasXDiff, this.canvasYDiff);
-		this.board.lineTo(this.convertAngleToX(this.winningSectorRange[0]), this.convertAngleToY(this.winningSectorRange[0]));
-		this.board.stroke();
-		this.board.moveTo(this.canvasXDiff, this.canvasYDiff);
-		this.board.lineTo(this.convertAngleToX(this.winningSectorRange[1]), this.convertAngleToY(this.winningSectorRange[1]));
 		this.board.stroke();
 	}
 
