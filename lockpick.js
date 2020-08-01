@@ -1,12 +1,7 @@
-function convertAngleToXLength(angle, radius) {
-	const radians = (angle*Math.PI)/180;
-	return radius*Math.sin(radians);
-}
-
 const radius = 100;
 const startPosition = 90;
 
-const DIFFICULTY_X_LENGTH_MAP = {
+const DIFFICULTY_ANGLE_MAP = {
 	"Novice": 12,
 	"Apprentice": 10,
 	"Adept": 8,
@@ -15,14 +10,15 @@ const DIFFICULTY_X_LENGTH_MAP = {
 }
 
 class Lockpick {
-	constructor(difficulty="Novice") {
+	constructor(game, difficulty="Novice") {
 		const self = this;
+		this.game = game;
 		this.startPos = startPosition;
-		this.radius = 100;
+		this.radius = radius;
 		this.currentPos = startPosition;
-		this.health = Math.floor(100 / (Object.keys(DIFFICULTY_X_LENGTH_MAP).indexOf(difficulty)+1));
+		this.health = Math.floor(100 / (Object.keys(DIFFICULTY_ANGLE_MAP).indexOf(difficulty)+1));
 		this.difficulty = difficulty;
-		this.sectorAngle = DIFFICULTY_X_LENGTH_MAP[this.difficulty];
+		this.sectorAngle = DIFFICULTY_ANGLE_MAP[this.difficulty];
 		this.winningSectorRange = this.chooseWinningSectorRange();
 		this.determiningSectorRange = [(this.winningSectorRange[0] - (Math.floor(this.sectorAngle/2))), (this.winningSectorRange[1] + (Math.floor(this.sectorAngle/2)))];
 		this.holdUp = false;
@@ -31,8 +27,6 @@ class Lockpick {
 		this.board = this.canvas.getContext('2d');
 		this.canvasXDiff = this.canvas.width / 2;
 		this.canvasYDiff = this.canvas.height-50;
-		document.addEventListener("keydown", self.handleEvent.bind(self));
-		document.addEventListener("keyup", self.handleEventUp.bind(self));
 		this.downTimeout = "";
 		this.upTimeout = "";
 		this.leftTimeout = "";
@@ -76,14 +70,14 @@ class Lockpick {
 				if (this.checkIfWon()) {
 					window.clearInterval(this.upTimeout)
 					console.log("Winner!");
-					alert("winner!");
+					this.game.won();
 				} else {
 					this.health -= 1;
 					console.log('helath')
 					if (this.checkIfLost()) {
 						window.clearInterval(this.upTimeout)
 						console.log("Loser!");
-						alert("loser!")
+						this.game.lost();
 					}
 				}
 			}
@@ -169,33 +163,14 @@ class Lockpick {
 		return Math.cos((-(angle+90)*(Math.PI/180)))*this.radius+this.canvasYDiff;
 	}
 
-	handleEventUp(e) {
-		if (e.code == "ArrowUp") {
-			e.preventDefault();
-			this.letGo()
-		} else if (e.code == "ArrowRight") {
-            e.preventDefault();
-            window.clearInterval(this.rightTimeout)
-        } else if (e.code == "ArrowLeft") {
-            e.preventDefault();
-			window.clearInterval(this.leftTimeout)
-		}
+	softReset() {
+		this.health = Math.floor(100 / (Object.keys(DIFFICULTY_ANGLE_MAP).indexOf(this.difficulty)+1));
+		this.currentUnlockStatus = 0;
 	}
-
-	handleEvent(e) {
-        if (e.code == "ArrowRight") {
-            e.preventDefault();
-            this.turnRight();
-        } else if (e.code == "ArrowLeft") {
-            e.preventDefault();
-            this.turnLeft();
-        } else if (e.code == "ArrowUp") {
-			e.preventDefault();
-            this.tryUnlock();
-        }
-    }
 
 	static randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
+
+export default Lockpick;

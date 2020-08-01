@@ -1,0 +1,36 @@
+{
+  "name": "lockpick-mini-game-lite",
+  "version": "1.0.0",
+  "description": "Skyrim-inspired lockpick mini game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack --watch --mode=development",
+    "start": "node ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamedwaiz96/lockpick-mini-lite.git"
+  },
+  "author": "Hamed Waiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hamedwaiz96/lockpick-mini-lite/issues"
+  },
+  "homepage": "https://github.com/hamedwaiz96/lockpick-mini-lite#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-node-externals": "^2.5.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "jquery": "^3.5.1"
+  }
+}
